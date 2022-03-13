@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void addedge(vector<int> ad[],int u, int v){
+    ad[u].push_back(v);
+    return ;
+}
+
+void dfsTopo(vector<int> adj[],int i, int v,stack<int> &s,vector<int>& visited){
+    
+    for(auto j: adj[i]){
+        if(!visited[j]){
+            visited[j]=1;
+            dfsTopo(adj, j, v, s, visited);
+        }
+    }
+    s.push(i);
+
+}
+
+
+
+int main(){
+    int v=6;
+    vector<int> adj[v];
+    addedge(adj,0,1);
+    addedge(adj,0,2);
+    addedge(adj,1,3);
+    addedge(adj,2,3);
+    addedge(adj,3,4);
+    addedge(adj,3,5); 
+    cout<<"List "<<endl;
+    for(auto i: adj){
+        for(auto j: i)
+            cout<<j<<" ";
+    cout<<endl;
+    }
+    vector<int> visited(6,0);
+    stack<int> s;
+    for(int i=0;i<v;i++){
+        if(!visited[i]){
+            dfsTopo(adj, i,v, s, visited);
+        }
+    }
+
+    while(!(s.empty())){
+        cout<<s.top()<<endl;
+        s.pop();
+    }
+}
