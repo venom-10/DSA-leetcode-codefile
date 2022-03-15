@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void addedge(vector<int> ad[],int u, int v,vector<int>&countofInde){
+    ad[u].push_back(v);
+    countofInde[v]++;
+    return ;
+}
+
+void topologicalsort(vector<int>adj[], vector<int>&countofInde,int v){
+    int count=0;
+    queue<int> q;
+    for(int i=0;i<v;i++){
+        if(countofInde[i]==0)
+            q.push(i);
+    }
+    while(!(q.empty())){
+        int fele=q.front();
+        q.pop();
+        count++;
+        for(auto i: adj[fele]){
+            countofInde[i]--;
+            if(countofInde[i]==0)
+                q.push(i);
+        }
+    }
+    if(count!=v)
+        cout<<"Cycle found";
+    else
+        cout<<"Cycle not found";
+}
+
+
+
+int main(){
+    int v=5;
+    vector<int> adj[v];
+    vector<int> countofInde(v,0);
+    addedge(adj,0,2,countofInde);
+    addedge(adj,0,3,countofInde);
+    addedge(adj,1,3,countofInde);
+    addedge(adj,1,4,countofInde);
+    cout<<"List "<<endl;
+    for(auto i: adj){
+        for(auto j: i)
+            cout<<j<<" ";
+    cout<<endl;
+    }
+    cout<<"count of Indegree"<<endl;
+    for(auto i: countofInde)
+        cout<<i<<endl;
+    cout<<"end of countofInde"<<endl;
+    topologicalsort(adj,countofInde,v);
+}
